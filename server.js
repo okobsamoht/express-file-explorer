@@ -1,10 +1,10 @@
 var express = require('express');
-var fileManager = require('./index');
+var fileExplorer = require('./index');
 
 var app = express();
 
 var dir = process.argv[2] || '.';
-app.use(fileManager(dir));
+app.use(fileExplorer(dir));
 
 var port = 9006, ip = null;
 app.listen(port, ip, function (error) {
