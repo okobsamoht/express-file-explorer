@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%=directory.name%>: <%=directory.path%></title>
+		<link rel="stylesheet" href="<%=style%>/main.css">
+	</head>
+	<body>
+		<div id="path">
+			<% if (directory.parentUrl) { %>
+				<a id="parent" href="<%=directory.parentUrl%>">..</a>
+			<% } %>
+			<span class="path"><%=directory.path%></span>
+			<a id="new-file">new file</a>
+			<script>
+				document.getElementById('new-file').onclick = function () {
+			        var filename = prompt('New file:', 'index.md');
+			        if (filename) {
+			            var r = new XMLHttpRequest();
+			            r.open('PUT', <%:directory.rawUrl%> + '/' + encodeURIComponent(filename));
+						r.onreadystatechange = function () {
+							if (r.readyState !== 4) return;
+							if (r.status < 200 || r.status >= 300) {
+								return alert(r.statusText);
+							}
+							location.reload();
+						};
+						r.send('');
+			        }
+			    };
+			</script>
+		</div>
+		<div id="main">
+			<ul class="dir">
+				<% directory.children.forEach(function (child) { %>
+					<li class="child child-<%=child.type%> type-<%=child.mimeCategory%> subtype-<%=child.mimeSubType%>"><% if (child.type !== 'directory') {%><a href="<%=child.rawUrl%>" class="child-action"></a><% } %><a href="<%=child.url%>"><%=child.name + (child.type === 'file' ? '' : '/')%></a></li>
+				<% });%>
+			</ul>
+		</div>
+		<div id="status"></div>
+		<script src="<%=style%>/js/directory.js"></script>
+		<script src="<%=style%>/js/page-drop.js"></script>
+		<script>
+			pageDrop({
+				method: 'PUT',
+				url: function (name) {
+					return <%:directory.rawUrl%> + '/' + encodeURIComponent(name);
+				}
+			});
+		</script>
+	</body>
+</html>

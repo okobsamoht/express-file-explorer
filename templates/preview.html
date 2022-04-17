@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%=file.name%>: <%=file.path%></title>
+		<link rel="stylesheet" href="<%=style%>/main.css">
+	</head>
+	<body>
+		<div id="path">
+			<a id="parent" href="<%=file.parentUrl%>">..</a>
+			<span class="path"><%=file.path%></span>
+		</div>
+		<% if (/^image\//.test(file.mimeType || file.mimeGuess)) { %>
+			<div id="main" class="image">
+				<img src="<%=file.rawUrl%>">
+			</div>
+		<% } else {%>
+			<iframe id="main" src="<%=file.rawUrl%>">
+			</iframe>
+		<% } %>
+		<script src="<%=style%>/js/page-drop.js"></script>
+		<script>
+			pageDrop({
+				method: 'PUT',
+				url: <%:file.rawUrl%>
+			});
+		</script>
+	</body>
+</html>

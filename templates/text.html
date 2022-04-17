@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%=file.name%>: <%=file.path%></title>
+		<link rel="stylesheet" href="<%=style%>/main.css">
+	</head>
+	<body>
+		<div id="path">
+			<a id="parent" href="<%=file.parentUrl%>">..</a>
+			<input id="save" type="button" value="save">
+			<div id="status">loading</div>
+			<span class="path"><%=file.path%></span>
+		</div>
+		<pre id="main"></pre>
+		<script src="<%=style%>/js/ace/ace.js"></script>
+		<script src="<%=style%>/js/saving-editor.js"></script>
+		<script>
+			var editor = savingEditor(
+				{
+					main: 'main',
+					button: 'save',
+					status: 'status'
+				},
+				<%:text%>,
+				<%:(file.mimeType || file.mimeGuess).replace(/^[^/]*\/(x-)?/i, '').replace(/(;|\s).*/, '')%>,
+				function (value, callback) {
+					var r = new XMLHttpRequest();
+					r.open('PUT', <%:file.rawUrl%>, true);
+					r.onreadystatechange = function () {
+						if (r.readyState !== 4) return;
+						if (r.status < 200 || r.status >= 300) {
+							callback(new Error(r.status + ' ' + r.statusText));
+						} else {
+							callback(null);
+						}
+					};
+					r.setRequestHeader('Content-Type', <%:file.mimeType || file.mimeGuess%>);
+					r.send(value);
+				}
+			);
+		</script>
+	</body>
+</html>

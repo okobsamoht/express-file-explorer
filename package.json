@@ -1,0 +1,20 @@
+{
+  "name": "efilex",
+  "version": "1.0.0",
+  "description": "Express file explorer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas BOKO",
+  "license": "unlicenced",
+  "dependencies": {
+    "express": "^4.12.4",
+    "async": "~1.2.0",
+    "mime": "~1.3.4"
+  },
+  "bugs": {
+    "url": "https://github.com/okobsamoht/express-file-explorer/issues"
+  },
+  "homepage": "https://github.com/okobsamoht/express-file-explorer#readme"
+}
